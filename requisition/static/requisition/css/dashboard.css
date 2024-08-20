@@ -1,0 +1,436 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    background: #F0F2F5;
+}
+
+/*Dashboard Style*/
+
+.w3-sidebar{
+    z-index: 2;
+    background: #1C133D;
+}
+
+.close-btn{
+    color: white;
+    text-align: right;
+    background: #f04338;
+}
+
+.dashboard-header{
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    padding: 20px 10px;
+    align-items: center;
+    background: #F0F2F5;
+    justify-content: space-between;
+}
+
+.user-profile{
+    display: flex;
+    align-items: center;
+}
+
+.username{
+    color: #828282;
+    display: none;
+}
+
+.user-profile-img{
+    width: 40px;
+    margin-left: 10px;
+    border-radius: 50%;
+    border: 2px solid #f04338;
+}
+
+.branding{
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: #f0f2f5;
+    justify-content: center;
+}
+
+.branding .logo{
+    width: 80px;
+}
+
+.dashboard-icon{
+    padding: 10px 20px;
+    background: #f04338;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.nav{
+    padding: 20px 30px;
+}
+
+.nav-item{
+    padding: 0 10px;
+    margin: 10px 0;
+}
+
+.nav-item i{
+    margin-right: 10px;
+}
+
+.nav li a{
+    color: white;
+}
+
+.nav li a:hover{
+    color: #f04338;
+}
+
+.active{
+    color:#f04338;
+}
+
+main{
+    padding: 20px;
+}
+
+.search-form, .search-form .form-group{
+    display: flex;
+    align-items: center;
+}
+
+.search-form label{
+    display: none;
+}
+
+.search-form select{
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-right: 5px;
+    border: none;
+    background: white;
+    outline: none;
+    color: #60778f;
+}
+
+.search-btn{
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    background: #f04338;
+}
+
+.search-btn:hover{
+    color: #1C133D;
+    opacity: 0.9;
+}
+
+.summary-card{
+    border: 1px solid #f04338;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.summary-card{
+    cursor: pointer;
+    box-shadow: 0 2px 6px #e0e0e0;
+}
+
+.summary-card:hover{
+    background: #f9f9f9;
+    box-shadow: 0 2px 6px #ccc;
+}
+
+.summary-card .card-title{
+    color: #1C133D;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.summary-card  .card-title p{
+    font-size: 18px;
+}
+
+.summary-card  .card-title .fa{
+    font-size: 26px;
+}
+
+.summary-card  .card-body h3{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.add-vehicle-card{
+    cursor: pointer;
+}
+
+.add-vehicle-card:hover{
+    background: #f9f9f9;
+    box-shadow: 0 2px 6px #ccc;
+}
+
+.add-vehicle-card a{
+    text-decoration: none;
+}
+
+.card .card-subtitle{
+    color: #828282;
+    font-size: 14px;
+}
+
+.modal-dialog .student-image{
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.modal-dialog .card{
+    height: 450px;
+    overflow-y: scroll;
+}
+
+.proof-id{
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.modal-title{
+    display: flex;
+    align-items: center;
+}
+
+.request-form input{
+    margin-bottom: 10px;
+}
+
+.card-footer{
+    display: flex;
+    font-size: 14px;
+    justify-content: space-between;
+}
+
+.table{
+    background: white;
+    border-radius: 10px;
+}
+
+.request-card input{
+    margin: 10px 0;
+    padding: 12px;
+}
+
+.request-card textarea{
+    margin: 10px 0;
+    padding: 12px;
+    height: 120px;
+    text-align: left;
+}
+
+.table-name{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.card-title-wrapper{
+    display: flex;
+    align-items: center;
+    margin: 5px 0 10px 0;
+}
+
+.error p{
+    color: red;
+    font-size: 14px;
+}
+
+.manage-request-icon{
+    padding: 5px 8;
+    font-size: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #60778f;
+}
+
+.manage-request-icon:hover{
+    border: none;
+    background: #f04338;
+}
+
+
+/* Edit request Styles */
+
+
+.update-request-form,
+.update-vehicle-form{
+    top:0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: fixed;
+    z-index: 99999999;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.update-request-form form, 
+.update-vehicle-form form{
+    width: 350px;
+    margin: 10px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.update-request-form input,
+.update-vehicle-form input{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.update-request-form textarea{
+    height: 100px;
+    resize: none;
+}
+
+.update-request-btns, 
+.update-vehicle-btns{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cancel-btn{
+    margin-left: 10px;
+    border-radius: 5px;
+    color: #f04338;
+    padding: 10px;
+    /* background: #cedff1; */
+    border: 1px solid #ccc;
+    text-decoration: none;
+}
+
+.cancel-btn:hover{
+    background: #f04338;
+    color: white;
+}
+
+.update-request-form hr{
+    margin: 20px 0;
+}
+
+.request-card{
+    border: none;
+}
+
+.create-request-btn{
+    color: white;
+    border: none;
+    margin: 20px 0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #f04338;
+}
+
+.create-request-btn:hover{
+    background: #1C133D;
+}
+
+.request-info{
+    display: grid;
+    /* justify-content: space-between; */
+    padding: 10px;
+    grid-gap: 20px;
+    grid-template-columns: 120px 1fr;
+    border-bottom: 1px solid #ccc;
+}
+
+.request-form .form-control,
+.add-vehicle-form .form-control{
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+
+.my-btn{
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #1C133D;
+    color: white;
+    border: none;
+}
+
+.my-btn:hover{
+    background: #f04338;
+
+}
+
+.request-form textarea{
+    height: 100px;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+/* Edit style ends here */
+
+
+.footer{
+    color: #828282;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    width: 100%;
+    z-index: 1;
+    border-top: 1px solid #f04338;
+    background: #F0F2F5;
+}
+
+@media(min-width:768px) {
+
+    .update-request-form form,
+    .update-vehicle-form form{
+        width: 450px;
+    }
+}
+
+
+/*
+ Media query for screens with a minimum width of 1024 pixels.
+ */
+
+ @media(min-width:1024px){
+
+    .username{
+        display: block;
+    }
+
+    .menu-icon{
+        display: none;
+    }
+
+    .icon-bar{
+        display: block;
+    }
+
+    main{
+        width: 90%;
+    }
+
+  }
+
+
+  @media(min-width:1366px){
+    main{
+        width: 90%;
+    }
+  }

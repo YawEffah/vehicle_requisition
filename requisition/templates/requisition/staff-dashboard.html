@@ -1,0 +1,208 @@
+{% extends 'requisition/base-dashboard.html' %}
+
+
+{% block nav %}
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class = "dashboard-icon">
+            <i class="fa fa-dashboard"></i> Dashboard
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#all requests"><i class="fa fa-list"></i>My Requests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </li>
+    </ul>
+{% endblock %}
+
+
+{% block main-content %}
+<!-- Display summary in cards -->
+<div class="main">
+<div class="summary-cards-wrap">
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card h-100 summary-card card-yellow">
+            <div class="card-body">
+                <div class="card-title">
+                    <p><i class="fa fa-clock-o"></i></p>
+                    <p>Pending</p>
+                </div>
+                <br>
+                <h3>{{ pending_vehicle_requests }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100 summary-card card-green">
+            <div class="card-body">
+                <div class="card-title">
+                    <p><i class="fa fa-clock-o"></i></p>
+                    <p>Approved</p>
+                </div>
+                <br>
+                <h3>{{ approved_vehicle_requests }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100 summary-card card-blue">
+            <div class="card-body">
+                <div class="card-title">
+                    <p><i class="fa fa-calculator"></i></p>
+                    <p>Total</p>
+                </div>
+                <br>
+                <h3>{{ total_vehicle_requests }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Button trigger modal -->
+<button class="create-request-btn" data-bs-toggle="modal" data-bs-target="#requestVehicleModal">
+<i class="fa fa-plus"></i> Request Vehicle
+</button>
+</div>
+
+<!-- Request Vehicle Modal -->
+<div class="modal  fade" id="requestVehicleModal" tabindex="-1" aria-labelledby="requestVehicleModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+<h4 class="modal-title" id="requestVehicleModalLabel">Request A Vehicle</h4>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="request-form">
+        <form method="POST" action="" class="request-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">
+                        {% for error in field.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if form.non_field_errors %}
+                <div class="error">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <input type="submit" value="Submit" class="my-btn">
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>
+
+<br>
+    <!-- All Vehicle Requests -->
+    <div class="all-requests" id="all-requests">
+        <!-- Table to display all vehicle requests -->
+        <table class="table table-hover">
+            <!-- Table headers -->
+            <h4 class="table-name alert alert-success"><i class="fa fa-car"></i> Vehicle Requests</h4>
+            <thead>
+                <tr>
+                    <th scope="col">Purpose</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">vehicle</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vehicle_request in vehicle_requests %}
+                <tr>
+                    <td>
+                        {{ vehicle_request.purpose }}
+                    </td>
+                    <td>
+                       {{ vehicle_request.destination }}
+                    </td>
+                    <td>
+                        {{ vehicle_request.vehicle }}
+                     </td>
+                    <td>
+                        {{ vehicle_request.status }}
+                    </td>
+                    <td>
+                        <!-- Manage request links -->
+                        <span>
+                            <!-- View request modal trigger -->
+                            <a title="View Request" data-bs-toggle="modal" data-bs-target="#viewRequestModal{{ vehicle_request.id }}">
+                                <i class="fa fa-eye manage-request-icon"></i>
+                            </a>
+                             <!-- Edit file link -->
+                             <a href="{% url 'requisition:edit_request' vehicle_request.id %}" title="Edit request"><i class="fa fa-edit manage-request-icon"></i></a>
+                             <!-- Delete file link -->
+              
+                             <a href="{% url 'requisition:delete_request' vehicle_request.id %}" class="card-link manage-request-icon delete-button" id="delete-button-{{ vehicle_request.id }}">
+                                <i class="fa fa-trash"></i> delete
+                            </a> 
+                        </span>
+                    </td>
+                </tr>
+                <!-- View request Modal -->
+                <div class="modal fade" id="viewRequestModal{{ vehicle_request.id }}" tabindex="-1" aria-labelledby="viewRequestModalLabel{{ vehicle_request.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" id="file-modal">
+                            <div class="modal-header">
+                                <div class="modal-title" id="viewRequestModalLabel{{ vehicle_request.id }}"> 
+                                    <h2>{{ vehicle_request.staff.username }} - {{ vehicle_request.staff.first_name }}</h2>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card request-card">
+                                    <div class="card-body">
+                                        <form>
+                                            <label>Purpose</label>
+                                            <input type="text" class="form-control" value="{{ vehicle_request.purpose }}" disabled>
+                                            <label>Description</label>
+                                            <textarea disabled class="form-control">{{ vehicle_request.description }}
+                                            </textarea>
+                                            <label>Destination</label>
+                                            <input type="text" class="form-control" value="{{ vehicle_request.destination }}" disabled>
+                                            <label>Vehicle</label>
+                                            <input type="text" class="form-control" value="{{ vehicle_request.vehicle }}" disabled>
+                                            <label>Start Datetime</label>
+                                            <input type="text" class="form-control" value="{{ vehicle_request.start_datetime }}" disabled>
+                                            <label>Return Datetime</label>
+                                            <input type="text" class="form-control" value="{{ vehicle_request.return_datetime }}" disabled>
+                                        </form>                                              
+                                        <span class="card-footer">
+                                            <small class="card-subtitle"><br><i class="fa fa-calendar"></i> Created At: {{ vehicle_request.created_at }} </small>
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    <tr>
+                        <td colspan="4"><p class="alert alert-warning">No vehicle requests available</p></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

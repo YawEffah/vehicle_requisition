@@ -1,0 +1,126 @@
+*{
+    color: #1C133D;
+    transition: 0.05s;
+    outline: none;
+    letter-spacing: 1px;
+    list-style-type: none;
+    text-decoration: none;
+}
+
+/* Global styles */
+
+.navbar-custom{
+    background-color: #b4b9c0;
+}
+
+.navbar .offcanvas-title, 
+.offcanvas .fa{
+    color: grey;
+}
+
+.navbar .nav-link{
+    margin: 10px 0;
+}
+
+.navbar .nav-link .fa{
+    color: grey;
+    margin-right: 20px;
+}
+
+.navbar .offcanvas-header{
+    padding: 30px;
+    cursor: pointer;
+}
+
+.offcanvas .fa-close{
+    color: red;
+    font-size: 20px;
+}
+
+.navbar .offcanvas-body{
+    padding: 40px;
+}
+
+
+.active{
+    color: #f04338;
+}
+
+.navbar .socials{
+    width: 50%;
+    margin: 40px auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Home page styles */
+
+.banner{
+    z-index: 1;
+    height: 100vh;
+    display: flex;
+    padding: 10px;
+    color: white;
+    align-items: center;
+    position: relative;
+    background-size: cover;
+    justify-content: center;
+    background-position: center;
+    background:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+    url(../images/hero.jpg) center;
+}
+
+.banner h1{
+    color: #fff;
+    font-size: 45px;
+    font-weight: 700;
+}
+
+.banner h2{
+    color: #fff;
+    font-size: 30px;
+}
+
+.banner h5{
+    color: #fff;
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 60px;
+}
+
+.btn{
+    margin-right: 20px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+
+.my-btn{
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    background: #f04338;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+.tutorial-btn{
+    border: 1px solid #f04338;
+    background: none;
+} 
+
+.my-btn:hover{
+    background: #1C133D;
+}
+
+.tutorial-btn:hover{
+    background: #f04338;
+} 
+
+/* .btn-primary{
+    background: #f04338;
+}
+
+.btn-secondary{
+    background: #141A41;
+} */

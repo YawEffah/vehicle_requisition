@@ -1,0 +1,144 @@
+{% extends 'requisition/base-dashboard.html' %}
+
+{% block nav %}
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class = "dashboard-icon">
+            <i class="fa fa-dashboard"></i> Dashboard
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'requisition:requests_dashboard' %}"><i class="fa fa-list"></i>Manage Requests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'requisition:fleet_dashboard' %}"><i class="fa fa-car"></i>Manage Fleet</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block main-content %}
+<!-- Display summary in cards -->
+<div class="main">
+<div class="summary-cards-wrap">
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+        <div class="card h-100 summary-card card-yellow">
+            <div class="card-body">
+                <div class="card-title">
+                    <p><i class="fa fa-clock-o"></i></p>
+                    <p>Available</p>
+                </div>
+                <br>
+                <h3>{{ available_vehicles }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100 summary-card card-green">
+            <div class="card-body">
+                <div class="card-title">
+                    <p><i class="fa fa-clock-o"></i></p>
+                    <p>Unavailable</p>
+                </div>
+                <br>
+                <h3>{{ unavailable_vehicles }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card h-100 summary-card card-blue">
+            <div class="card-body">
+                <div class="card-title">
+                    <p><i class="fa fa-calculator"></i></p>
+                    <p>Total</p>
+                </div>
+                <br>
+                <h3>{{ total_vehicles }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Button trigger modal -->
+<button class="create-request-btn" data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+<i class="fa fa-plus"></i> Add Vehicle
+</button>
+</div>
+
+<!-- Add Vehicle Modal -->
+<div class="modal  fade" id="addVehicleModal" tabindex="-1" aria-labelledby="addVehicleModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="addVehicleModalLabel">Request A Vehicle</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+            <div class="modal-body">
+                <div class="add-vehicle-form">
+                    <form method="POST" action="" class="vehicle-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="error">
+                                    {% for error in field.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            <div class="error">
+                                {% for error in form.non_field_errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <input type="submit" value="Submit" class="my-btn">
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<!-- Vehicle Info cards -->
+<div class="vehicle-info-wrap">
+    <h2 class="alert alert-info"><i class="fa fa-car"></i> Vehicle Information</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for vehicle in vehicles %}
+            <div class="col">
+                <div class="card h-100 add-vehicle-card" style="width: 18rem;">
+                    <img src="{{ vehicle.picture.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                    <h5 class="card-title">{{ vehicle.make }} {{ vehicle.model }} - {{ vehicle.year }}</h5>
+                    <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                    </div>
+                    <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Number:</strong> {{ vehicle.license_plate }}</li>
+                    </ul>
+                    <div class="card-body">
+                    <a href="{% url 'requisition:edit_vehicle' vehicle.id %}" class="card-link manage-request-icon"><i class="fa fa-edit"></i> edit</a>
+                    <a href="{% url 'requisition:delete_vehicle' vehicle.id %}" class="card-link manage-request-icon delete-button " id="delete-button-{{ vehicle.id }}">
+                        <i class="fa fa-trash"></i> delete
+                    </a>  
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <p class="alert alert-info">No car is found</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+

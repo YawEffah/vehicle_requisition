@@ -1,0 +1,105 @@
+/**
+ * Styles for mobile-first design.
+ *
+ * These styles are optimized for mobile devices and provide a responsive layout
+ * that adapts to larger screens using media queries.
+ *
+ */
+
+
+ *{
+    margin: 0;
+    padding: 0;
+    transition: all 0.2s;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif, tahoma;
+}
+
+html, body{
+    background: #f0f2f5;
+    overflow-y: hidden;
+    height: 100vh;
+}
+
+.auth-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.requisition-img{
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background: url(../images/background.jpg);
+}
+
+.form-heading h1{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.form-heading .mail-icon{
+    color: #1C133D;
+    font-size: 60px;
+}
+
+.logo{
+    width: 100px;
+}
+
+.auth-form{
+    width: 100%;
+    height: auto;
+    padding: 10px 30px;
+}
+
+.error p{
+    color: red;
+    font-size: 14px;
+}
+
+.auth-form form{
+    width: 300px;
+    margin: 10px auto;
+}
+ 
+.auth-form input{
+    width: 100%;
+    padding: 10px;
+    outline: none !important;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: none !important;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+
+.my-btn{
+    width: 295px;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #1C133D;
+}
+
+.my-btn:hover{
+    background-color: #f04338;
+}
+
+.footer-text{
+    margin: 10px;
+    font-size: 14px;
+    color: #777;
+}
+
+

@@ -1,0 +1,19 @@
+{% extends 'requisition/base-dashboard.html' %}
+{% load static %}
+
+{% block main-content %}
+    <div class="update-request-form">
+        <form method="post" class="exeat-update-form" enctype="multipart/form-data">
+            <h4 title="center">Update Request</h4>
+            <hr>
+            {% csrf_token %}
+            {{ edit_form.as_p }}
+            <span class="update-request-btns">
+                <input type="submit" value="Update Request" class="my-btn submit-btn">
+                <a href="{% url 'requisition:staff_dashboard'%}" class="cancel-btn">Cancel</a>
+            </span>
+        </form>
+    </div>
+    
+{% endblock %}
+            
