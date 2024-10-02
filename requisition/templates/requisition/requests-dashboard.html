@@ -27,11 +27,11 @@
         <div class="card h-100 summary-card card-yellow">
             <div class="card-body">
                 <div class="card-title">
-                    <p><i class="fa fa-clock-o"></i></p>
+                    <p><i class="fa fa-spinner"></i></p>
                     <p>Pending</p>
                 </div>
                 <br>
-                <h3>{{ pending_vehicle_requests }}</h3>
+                <h3>{{ total_pending_vehicle_requests }}</h3>
             </div>
         </div>
     </div>
@@ -39,11 +39,11 @@
         <div class="card h-100 summary-card card-green">
             <div class="card-body">
                 <div class="card-title">
-                    <p><i class="fa fa-clock-o"></i></p>
+                    <p><i class="fa fa-check"></i></p>
                     <p>Approved</p>
                 </div>
                 <br>
-                <h3>{{ approved_vehicle_requests }}</h3>
+                <h3>{{ total_approved_vehicle_requests }}</h3>
             </div>
         </div>
     </div>
@@ -68,103 +68,180 @@
     <!-- All Vehicle Requests -->
     <div class="all-requests" id="all-requests">
         <!-- Table to display all vehicle requests -->
-        <table class="table table-hover">
-            <!-- Table headers -->
-            <h4 class="table-name alert alert-success"><i class="fa fa-car"></i> Vehicle Requests</h4>
-            <thead>
-                <tr>
-                    <th scope="col">Purpose</th>
-                    <th scope="col">Destination</th>
-                    <th scope="col">Vehicle</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for vehicle_request in vehicle_requests %}
-                <tr>
-                    <td>
-                        {{ vehicle_request.purpose }}
-                    </td>
-                    <td>
-                       {{ vehicle_request.destination }}
-                    </td>
-                    <td>
-                        {{ vehicle_request.vehicle }}
-                     </td>
-                    <td>
-                        {{ vehicle_request.status }}
-                    </td>
-                    <td>
-                        <!-- Manage request links -->
-                        <span>
-                            <!-- View request modal trigger -->
-                            <a title="View Request" data-bs-toggle="modal" data-bs-target="#viewRequestModal{{ vehicle_request.id }}">
-                                <i class="fa fa-eye manage-request-icon"></i>
-                            </a>
-                             <!-- Status Change Dropdown -->
-                             <form method="post" action="{% url 'requisition:change_status' vehicle_request.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <select name="status" onchange="this.form.submit()" class="manage-request-icon">
-                                    <option>---Update---</option>
-                                    <option value="Approved" {% if transcript.status == 'Approved' %}selected{% endif %}>Approve</option>
-                                    <option value="Declined" {% if transcript.status == 'Declined' %}selected{% endif %}>Decline</option>
-                                    <option value="Returned" {% if transcript.status == 'Returned' %}selected{% endif %}>Returned</option>
-                                </select>
-                            </form>
-                            
-                        </span>
-                    </td>
-                </tr>
-                <!-- View request Modal -->
-                <div class="modal fade" id="viewRequestModal{{ vehicle_request.id }}" tabindex="-1" aria-labelledby="viewRequestModalLabel{{ vehicle_request.id }}" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content" id="file-modal">
-                            <div class="modal-header">
-                                <div class="modal-title" id="viewRequestModalLabel{{ vehicle_request.id }}"> 
-                                    <h2>{{ vehicle_request.staff.username }} - {{ vehicle_request.staff.first_name }}</h2>
+        <h4 class = "table-title"><i class = "fa fa-spinner"></i> Pending Requests</h4>
+            <table class="table table-hover">
+                <!-- Table headers -->
+                <thead>
+                    <tr>
+                        <th scope="col">Purpose</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vehicle_request in pending_vehicle_requests %}
+                    <tr>
+                        <td>
+                            {{ vehicle_request.purpose }}
+                        </td>
+                        <td>
+                        {{ vehicle_request.destination }}
+                        </td>
+                        <td>
+                            {{ vehicle_request.status }}
+                        </td>
+                        <td>
+                            <!-- Manage request links -->
+                            <span>
+                                <!-- View request modal trigger -->
+                                <a title="View Request" data-bs-toggle="modal" data-bs-target="#viewRequestModal{{ vehicle_request.id }}">
+                                    <i class="fa fa-eye manage-request-icon"></i>
+                                </a>
+                               <!-- Status Change Icons -->
+                                <form method="post" action="{% url 'requisition:change_status' vehicle_request.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    
+                                    <!-- Approve Button -->
+                                    <button type="submit" name="status" value="Approved" title="Approve" style="border: none; background:none;">
+                                        <i class="fas fa-check-circle manage-request-icon" style="color: green;"></i> <!-- FontAwesome icon for Approve -->
+                                    </button>
+
+                                    <!-- Decline Button -->
+                                    <button type="submit" name="status" value="Declined" title="Decline" style="border: none; background:none;">
+                                        <i class="fas fa-times-circle manage-request-icon" style="color: red;"></i> <!-- FontAwesome icon for Decline -->
+                                    </button>
+                                </form>
+                            </span>
+                        </td>
+                    </tr>
+                    <!-- View request Modal -->
+                    <div class="modal fade" id="viewRequestModal{{ vehicle_request.id }}" tabindex="-1" aria-labelledby="viewRequestModalLabel{{ vehicle_request.id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content" id="file-modal">
+                                <div class="modal-header">
+                                    <div class="modal-title" id="viewRequestModalLabel{{ vehicle_request.id }}"> 
+                                        <h2>{{ vehicle_request.staff.username }} - {{ vehicle_request.staff.first_name }}</h2>
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="card request-card">
-                                    <div class="card-body">
-                                        <div class="vehicle-request-details">  
-                                            <form>
-                                                <label>Purpose</label>
-                                                <input type="text" class="form-control" value="{{ vehicle_request.purpose }}" disabled>
-                                                <label>Description</label>
-                                                <textarea disabled class="form-control">{{ vehicle_request.description }}
-                                                </textarea>
-                                                <label>Destination</label>
-                                                <input type="text" class="form-control" value="{{ vehicle_request.destination }}" disabled>
-                                                <label>Vehicle</label>
-                                                <input type="text" class="form-control" value="{{ vehicle_request.vehicle }}" disabled>
-                                                <label>Start Datetime</label>
-                                                <input type="text" class="form-control" value="{{ vehicle_request.start_datetime }}" disabled>
-                                                <label>Return Datetime</label>
-                                                <input type="text" class="form-control" value="{{ vehicle_request.return_datetime }}" disabled>
-                                            </form>                                                 
-                                        <span class="card-footer">
-                                            <small class="card-subtitle"><br><i class="fa fa-calendar"></i> Created At: {{ vehicle_request.created_at }} </small>
-                                        </span>
+                                <div class="modal-body">
+                                    <div class="card request-card">
+                                        <div class="card-body">
+                                            <div class="vehicle-request-details">  
+                                                <form>
+                                                    <div class="form-group">
+                                                        <label>Purpose</label>
+                                                        <input type="text" class="form-control" value="{{ vehicle_request.purpose }}" disabled>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label>Description</label>
+                                                        <textarea disabled class="form-control">{{ vehicle_request.description }}</textarea>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label>Destination</label>
+                                                        <input type="text" class="form-control" value="{{ vehicle_request.destination }}" disabled>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label>Vehicle</label>
+                                                        <input type="text" class="form-control" value="{{ vehicle_request.vehicle }}" disabled>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Start Datetime</label>
+                                                                <input type="text" class="form-control" value="{{ vehicle_request.start_datetime }}" disabled>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Return Datetime</label>
+                                                                <input type="text" class="form-control" value="{{ vehicle_request.return_datetime }}" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                                                               
+                                            <span class="card-footer">
+                                                <small class="card-subtitle"><br><i class="fa fa-calendar"></i> Created At: {{ vehicle_request.created_at }} </small>
+                                            </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                {% empty %}
-                    <tr>
-                        <td colspan="4"><p class="alert alert-warning">No vehicle requests available</p></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5"><p class="alert alert-warning">No vehicle requests available</p></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
     </div>
 
+
+
+    <br>
+    <br>
+
+
+     <!-- All Approved Vehicle Requests -->
+     <div class="all-requests" id="all-requests">
+            <h4  class = "table-title"><i class = "fa fa-check"></i> Approved Requests</h4>
+            <table class="table table-hover">
+                <!-- Table headers -->
+                <thead>
+                    <tr>
+                        <th scope="col">Purpose</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vehicle_request in approved_vehicle_requests %}
+                    <tr>
+                        <td>
+                            {{ vehicle_request.purpose }}
+                        </td>
+                        <td>
+                        {{ vehicle_request.destination }}
+                        </td>
+                        <td>
+                            {{ vehicle_request.status }}
+                        </td>
+                        <td>
+                            <!-- Manage request links -->
+                            <span>
+                               <!-- Status Change Icon for Returned -->
+                                <form method="post" action="{% url 'requisition:change_status' vehicle_request.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    
+                                    <!-- Returned Button -->
+                                    <button type="submit" name="status" value="Returned" title="Mark as Returned" style="border: none; background:none;">
+                                        <i class="fas fa-undo manage-request-icon" style="color: blue; "></i> <!-- FontAwesome icon for Returned -->
+                                    </button>
+                                </form>
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    {% empty %}
+                        <tr>
+                            <td colspan="5"><p class="alert alert-warning">No approved requests available</p></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 {% endblock %}

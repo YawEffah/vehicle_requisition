@@ -27,10 +27,11 @@ def index(request):
 def staff_dashboard(request):
 
     staff = request.user
-    pending_vehicle_requests = CarRequest.objects.filter(staff=staff, status='Pending').count()
-    approved_vehicle_requests = CarRequest.objects.filter(staff=staff, status='Approved').count()
+    total_pending_vehicle_requests = CarRequest.objects.filter(staff=staff, status='Pending').count()
+    total_approved_vehicle_requests = CarRequest.objects.filter(staff=staff, status='Approved').count()
     total_vehicle_requests = CarRequest.objects.filter(staff=staff).count()
-    vehicle_requests = CarRequest.objects.filter(staff=staff).order_by('-id')
+    pending_vehicle_requests = CarRequest.objects.filter(staff=staff, status = "Pending").order_by('-id')
+    approved_vehicle_requests = CarRequest.objects.filter(staff=staff, status = "Approved").order_by('-id')
     
     if request.method == 'POST':
         form = CarRequestForm(request.POST)
@@ -51,7 +52,9 @@ def staff_dashboard(request):
         'pending_vehicle_requests': pending_vehicle_requests, 
         'approved_vehicle_requests': approved_vehicle_requests, 
         'total_vehicle_requests': total_vehicle_requests, 
-        'vehicle_requests': vehicle_requests}
+        'total_pending_vehicle_requests': total_pending_vehicle_requests,
+        'total_approved_vehicle_requests': total_approved_vehicle_requests,
+        }
         
     return render(request, 'requisition/staff-dashboard.html', context)
 
@@ -79,16 +82,18 @@ def edit_request_view(request, request_id):
 @login_required
 @user_passes_test(is_transport_officer, login_url='login')
 def transport_officer_dashboard(request):
-    pending_vehicle_requests = CarRequest.objects.filter(status = 'Pending').count()
-    approved_vehicle_requests = CarRequest.objects.filter(status = 'Approved').count()
+    total_pending_vehicle_requests = CarRequest.objects.filter(status = 'Pending').count()
+    total_approved_vehicle_requests = CarRequest.objects.filter(status = 'Approved').count()
+    pending_vehicle_requests = CarRequest.objects.filter(status = 'Pending').order_by('-id')
+    approved_vehicle_requests = CarRequest.objects.filter(status = 'Approved').order_by('-id')
     total_vehicle_requests = CarRequest.objects.all().count
-    vehicle_requests = CarRequest.objects.all().order_by('-id')
 
     context = {
         'pending_vehicle_requests': pending_vehicle_requests,
         'approved_vehicle_requests': approved_vehicle_requests,
         'total_vehicle_requests': total_vehicle_requests,
-        'vehicle_requests': vehicle_requests
+        'total_pending_vehicle_requests': total_pending_vehicle_requests,
+        'total_approved_vehicle_requests': total_approved_vehicle_requests
     }
     return render(request, 'requisition/requests-dashboard.html', context)
 

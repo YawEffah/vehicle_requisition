@@ -30,6 +30,14 @@ class CarRequestForm(forms.ModelForm):
                 'type': 'datetime-local'
             }),
         }
+        labels = {
+            'purpose': 'Purpose',
+            'description': 'Description',
+            'destination': 'Destination',
+            'vehicle': 'Car',
+            'start_datetime': 'Start Date and Time',
+            'return_datetime': 'Return Date and Time',
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -58,5 +66,11 @@ class CreateVehicleForm(forms.ModelForm):
             'model': forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Enter car model...'}),
             'year': forms.NumberInput(attrs={'class':'form-control', 'placeholder': 'Enter manufactured year...'}),
             'picture': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Upload a picture of the car...'}),
+        }
+        labels = {
+            'license_plate': 'License Plate',
+            'make': 'Make',
+            'model': 'Model',
+            'year': 'Year',
         }
 

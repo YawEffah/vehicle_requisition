@@ -79,26 +79,39 @@
                 <div class="add-vehicle-form">
                     <form method="POST" action="" class="vehicle-form" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {% for field in form %}
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="error">
-                                    {% for error in field.errors %}
-                                        <p>{{ error }}</p>
-                                    {% endfor %}
+                        <div class="row">
+                            {% for field in form %}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ field.label_tag }}
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="error text-danger">
+                                                {% for error in field.errors %}
+                                                    <p>{{ error }}</p>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            {% endif %}
-                        {% endfor %}
+                    
+                                {% if forloop.counter|divisibleby:"2" %}
+                                    </div><div class="row">  <!-- Close current row and open a new one every two fields -->
+                                {% endif %}
+                            {% endfor %}
+                        </div> <!-- End of row -->
+                    
                         {% if form.non_field_errors %}
-                            <div class="error">
+                            <div class="error text-danger">
                                 {% for error in form.non_field_errors %}
                                     <p>{{ error }}</p>
                                 {% endfor %}
                             </div>
                         {% endif %}
-                        <input type="submit" value="Submit" class="my-btn">
+                    
+                        <input type="submit" value="Submit" class="btn btn-primary my-btn">
                     </form>
+                    
                 </div>
             </div>
             <div class="modal-footer">
@@ -123,9 +136,9 @@
                     <ul class="list-group list-group-flush">
                     <li class="list-group-item"><strong>Number:</strong> {{ vehicle.license_plate }}</li>
                     </ul>
-                    <div class="card-body">
-                    <a href="{% url 'requisition:edit_vehicle' vehicle.id %}" class="card-link manage-request-icon"><i class="fa fa-edit"></i> edit</a>
-                    <a href="{% url 'requisition:delete_vehicle' vehicle.id %}" class="card-link manage-request-icon delete-button " id="delete-button-{{ vehicle.id }}">
+                    <div class="card-footer">
+                    <a href="{% url 'requisition:edit_vehicle' vehicle.id %}" class="btn btn-warning"><i class="fa fa-edit"></i> Edit</a>
+                    <a href="{% url 'requisition:delete_vehicle' vehicle.id %}" class="btn btn-danger delete-button " id="delete-button-{{ vehicle.id }}">
                         <i class="fa fa-trash"></i> Delete
                     </a>  
                     </div>
